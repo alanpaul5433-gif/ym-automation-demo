@@ -1,14 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Search, ArrowUpRight, ChevronRight, Link as LinkIcon, Share2,
   ShieldCheck, CheckCircle2, Truck, FileText, Download,
   Zap, CircuitBoard, Package, FileCheck, Plus, Minus,
   Phone, Mail, MapPin, Linkedin, Youtube, Twitter, Instagram,
   X, Globe2, Award, Copy, ChevronDown, AlertCircle,
-  ZoomIn, ChevronLeft
+  ZoomIn, ChevronLeft, Menu
 } from "lucide-react";
 
 export default function ProductDetailPage() {
+  const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   // ========== PRODUCT DATA — single source of truth ==========
   const product = {
     brand: "GE",
@@ -233,7 +236,33 @@ export default function ProductDetailPage() {
           <button className="hidden md:inline-flex items-center gap-2 bg-[#0A1628] text-[#FAFAF5] px-5 py-3 text-sm font-medium hover:bg-[#E85D2F] transition group flex-shrink-0">
             Request Quote <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform"/>
           </button>
+
+          {/* Mobile hamburger */}
+          <button
+            className="ml-auto lg:hidden p-2 text-[#0A1628]"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6"/> : <Menu className="w-6 h-6"/>}
+          </button>
         </div>
+
+        {/* Mobile dropdown menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden border-t border-[#E5E1D8] bg-[#FAFAF5] px-6 py-4 flex flex-col gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8B8680]"/>
+              <input placeholder="Part number, brand, or module…" className="w-full pl-10 pr-4 py-3 bg-white border border-[#E5E1D8] outline-none text-sm font-mono-tech placeholder:text-[#8B8680]"/>
+            </div>
+            <button onClick={() => { navigate('/'); setMobileMenuOpen(false); }} className="text-sm font-medium py-2 border-b border-[#E5E1D8] text-left hover:text-[#E85D2F] transition">Home</button>
+            <button onClick={() => { navigate('/category'); setMobileMenuOpen(false); }} className="text-sm font-medium py-2 border-b border-[#E5E1D8] text-left hover:text-[#E85D2F] transition">Brands / Catalog</button>
+            <a href="#specs" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium py-2 border-b border-[#E5E1D8] hover:text-[#E85D2F] transition">Specifications</a>
+            <a href="#rfq-section" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium py-2 border-b border-[#E5E1D8] hover:text-[#E85D2F] transition">Request Quote</a>
+            <button onClick={() => { document.getElementById('rfq-section')?.scrollIntoView({behavior:'smooth'}); setMobileMenuOpen(false); }} className="w-full bg-[#0A1628] text-[#FAFAF5] py-3 text-sm font-medium hover:bg-[#E85D2F] transition flex items-center justify-center gap-2">
+              Request Quote <ArrowUpRight className="w-4 h-4"/>
+            </button>
+          </div>
+        )}
       </header>
 
       {/* ============ BREADCRUMB ============ */}
@@ -242,7 +271,7 @@ export default function ProductDetailPage() {
           <nav aria-label="Breadcrumb" className="font-mono-tech text-xs tracking-wider uppercase text-[#8B8680]">
             <a href="/" className="hover:text-[#E85D2F]">Home</a>
             <span className="mx-2">›</span>
-            <a href="#" className="hover:text-[#E85D2F]">GE</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); navigate('/category'); }} className="hover:text-[#E85D2F]">GE</a>
             <span className="mx-2">›</span>
             <a href="#" className="hover:text-[#E85D2F]">Power Distribution</a>
             <span className="mx-2">›</span>
@@ -725,7 +754,7 @@ export default function ProductDetailPage() {
               { pn: "IS215UCVFH2AB", name: "Turbine Control VFH2", stock: 12, cond: "New surplus", warr: "12 mo", img: relatedImages["IS215UCVFH2AB"] },
               { pn: "IS200AEAAH1AAA", name: "Analog I/O Module", stock: 9, cond: "Refurbished", warr: "12 mo", img: relatedImages["IS200AEAAH1AAA"] }
             ].map((r, i) => (
-              <div key={i} className="bg-white group cursor-pointer flex flex-col">
+              <div key={i} className="bg-white group cursor-pointer flex flex-col" onClick={() => navigate('/product')}>
                 <div className="relative aspect-[4/3] overflow-hidden bg-[#0A1628]">
                   <img src={r.img} alt={r.pn} className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700"/>
                   <div className="absolute top-3 left-3 font-mono-tech text-[9px] tracking-widest uppercase text-white/70">Fig. {String(i+1).padStart(2,'0')}</div>

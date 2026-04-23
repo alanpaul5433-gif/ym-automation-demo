@@ -1,16 +1,19 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Search, ArrowUpRight, ShieldCheck, Truck, Globe2, Award,
   Factory, CircuitBoard, Zap, Package, FileCheck,
   ChevronRight, Plus, Minus, Phone, Mail, MapPin,
   CheckCircle2, Linkedin, Youtube, Twitter, Instagram,
   Droplet, Flame, FlaskConical, Wrench, Trees, FileText,
-  Car, Cpu
+  Car, Cpu, Menu, X
 } from "lucide-react";
 
 export default function YMAutomationHome() {
+  const navigate = useNavigate();
   const [openFAQ, setOpenFAQ] = useState(0);
   const [activeFilter, setActiveFilter] = useState("All");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Real product photography (base64-embedded) + placehold.co plates for remainder.
   // IMG_CIRCUIT: processed macro of circuit board with visible IC chips (PDP + homepage hero)
@@ -147,7 +150,33 @@ export default function YMAutomationHome() {
             Request Quote
             <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform"/>
           </button>
+
+          {/* Mobile hamburger */}
+          <button
+            className="ml-auto lg:hidden p-2 text-[#0A1628]"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6"/> : <Menu className="w-6 h-6"/>}
+          </button>
         </div>
+
+        {/* Mobile dropdown menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden border-t border-[#E5E1D8] bg-[#FAFAF5] px-6 py-4 flex flex-col gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8B8680]"/>
+              <input placeholder="Part number, brand, or module…" className="w-full pl-10 pr-4 py-3 bg-white border border-[#E5E1D8] outline-none text-sm font-mono-tech placeholder:text-[#8B8680]"/>
+            </div>
+            <a href="#catalog" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium py-2 border-b border-[#E5E1D8] hover:text-[#E85D2F] transition">Catalog</a>
+            <a href="#brands" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium py-2 border-b border-[#E5E1D8] hover:text-[#E85D2F] transition">Brands</a>
+            <a href="#verify" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium py-2 border-b border-[#E5E1D8] hover:text-[#E85D2F] transition">Verification</a>
+            <a href="#engineers" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium py-2 border-b border-[#E5E1D8] hover:text-[#E85D2F] transition">Engineers</a>
+            <button onClick={() => { setMobileMenuOpen(false); }} className="w-full bg-[#0A1628] text-[#FAFAF5] py-3 text-sm font-medium hover:bg-[#E85D2F] transition flex items-center justify-center gap-2">
+              Request Quote <ArrowUpRight className="w-4 h-4"/>
+            </button>
+          </div>
+        )}
       </header>
 
       {/* ============ HERO ============ */}
@@ -286,7 +315,7 @@ export default function YMAutomationHome() {
               "Schneider", "Yokogawa", "Bently Nevada", "Triconex", "Foxboro", "Woodward",
               "HIMA", "B&R", "Rexroth", "Rockwell", "DEIF", "ALSTOM"
             ].map((brand, i) => (
-              <a key={i} href="#" className="group relative aspect-[3/2] border-r border-b border-[#E5E1D8] flex flex-col items-center justify-center p-6 hover:bg-[#0A1628] transition">
+              <a key={i} href="#" onClick={(e) => { e.preventDefault(); navigate('/category'); }} className="group relative aspect-[3/2] border-r border-b border-[#E5E1D8] flex flex-col items-center justify-center p-6 hover:bg-[#0A1628] transition">
                 <span className="absolute top-3 left-4 font-mono-tech text-[10px] text-[#8B8680] group-hover:text-white/40 transition">
                   {String(i+1).padStart(2, '0')}
                 </span>
@@ -380,7 +409,7 @@ export default function YMAutomationHome() {
                 img: productImages["ZR402G"]
               }
             ].map((p, i) => (
-              <div key={i} className="group bg-white hover:bg-[#FAFAF5] transition cursor-pointer flex flex-col">
+              <div key={i} className="group bg-white hover:bg-[#FAFAF5] transition cursor-pointer flex flex-col" onClick={() => navigate('/product')}>
                 {/* Image — photographic dark plate */}
                 <div className="relative aspect-[4/3] overflow-hidden bg-[#0A1628] border-b border-[#E5E1D8]">
                   <img
