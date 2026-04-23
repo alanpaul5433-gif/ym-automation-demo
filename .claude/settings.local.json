@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(unzip -l files.zip)",
+      "Bash(npm --version)",
+      "Bash(npm install:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(xargs grep:*)",
+      "Bash(python3 -c \" import sys, json lines = sys.stdin.read\\(\\).split\\('\\\\n'\\) for line in lines: if not line.strip\\(\\): continue try: d = json.loads\\(line\\) msg = d.get\\('message',''\\) or d.get\\('data',{}\\).get\\('message',''\\) if isinstance\\(msg, dict\\): content = msg.get\\('content',''\\) if isinstance\\(content, list\\): for c in content: if isinstance\\(c, dict\\) and c.get\\('type'\\) == 'text': text = c.get\\('text',''\\) if 'QA' in text or 'missing' in text.lower\\(\\) or 'client' in text.lower\\(\\): print\\(text[:500]\\) print\\('---'\\) except: pass \")",
+      "Bash(git --version)",
+      "Bash(gh --version)",
+      "Bash(gh auth:*)"
+    ]
+  }
+}
